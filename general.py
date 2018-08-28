@@ -1,4 +1,5 @@
 import textwrap
+import socket
 
 
 # Returns MAC as string from bytes (ie AA:BB:CC:DD:EE:FF)
@@ -16,3 +17,10 @@ def format_multi_line(prefix, string, size=80):
         if size % 2:
             size -= 1
     return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
+ 
+def Get_my_nat_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    myIP = s.getsockname()[0]
+    s.close() 
+    return myIP
