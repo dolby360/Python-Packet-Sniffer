@@ -1,1 +1,5 @@
 .idea/
+/__pycache__
+/ARP_Analytics/__pycache__
+/networking/__pycache__
+capture.pcap
