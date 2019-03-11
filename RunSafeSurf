@@ -1,2 +1,0 @@
-#!/bin/bash
-sudo python3 ./Sniffer_analyzer.py --Safe_Surf
