@@ -12,6 +12,7 @@ from decimal import *
 import time
 from multiprocessing import Process, Queue
 from ARP_Analytics.ARP_analytics import ARP_analytics
+from Safe_surfing.Black_list_ip_analyzer import blackListAnalyze
 import sys
 
 TAB_1 = '\t - '
@@ -54,9 +55,10 @@ def Safe_Surfing():
     pcap = Pcap('Safe_Surfing capture.pcap')
     conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
 
-    _ARP_analytics = ARP_analytics()
+    _blackListAnalyze = blackListAnalyze()
+
     q = Queue()
-    p = Process(target=_ARP_analytics.analyze_ARP, args=(q,))
+    p = Process(target=_blackListAnalyze.analyze_IP, args=(q,))
     p.start()
 
     while True:
@@ -67,16 +69,25 @@ def Safe_Surfing():
         if eth.src_mac == my_mac_address:
             continue
 
+        # # IPv4
+        # if eth.proto == 8:
+        #     ipv4 = IPv4(eth.data)
+        #     # UDP
+        #     if ipv4.proto == 17:
+        #         udp = UDP(ipv4.data)
+        #         q.put([ipv4.src,ipv4.target])       
+        
+
         # IPv4
         if eth.proto == 8:
             ipv4 = IPv4(eth.data)
             # TCP
             if ipv4.proto == 6:
-                tcp = TCP(ipv4.data)
-                if len(tcp.data) > 0:
-                    # HTTP
-                    if tcp.src_port == 80 or tcp.dest_port == 80:
-                        
+                # tcp = TCP(ipv4.data)
+                # if len(tcp.data) > 0:
+                #     # HTTP
+                #     if tcp.src_port == 80 or tcp.dest_port == 80:
+                q.put([ipv4.src,ipv4.target])     
 
 arr = list(sys.argv)
 if arr[1] == '--ARP':

@@ -4,6 +4,7 @@ import os
 import io
 import random
 import string
+import time
 
 class FireBaseMng():
     def __init__(self):
@@ -13,6 +14,8 @@ class FireBaseMng():
         self.userName = ''
         self.password = ''
         self.setGetUser()
+
+        self.preventFlooding = []
         
 
     def get_trusted_MAC_addresses(self):
@@ -50,6 +53,14 @@ class FireBaseMng():
             dictOfDataBase = dict(data) 
             list_of_MACs = list(dictOfDataBase.keys())
         
+        
+
+        if MAC not in self.preventFlooding:
+            self.preventFlooding.append(MAC)
+        else:
+            return
+        print(str(MAC) + ' Suspected')
+
         if data == None:
             g = {str(MAC):'Suspected'}
             self._firebase.patch('/' + self.userName + '/Suspected MAC',g)

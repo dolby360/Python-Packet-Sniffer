@@ -22,7 +22,7 @@ class ARP_analytics():
             if popped in self.Trusted_MACs:
                 continue
 
-            print(popped)
+            # print(popped)
             self.statistics(popped)
             
 
