@@ -11,10 +11,23 @@ class ARP_analytics():
         self.FB_mng = FireBaseMng()
         for i in self.FB_mng.get_trusted_MAC_addresses():
             self.Trusted_MACs.append(i)
+
+        self.listOfSuspectedMAC = []
         print('Trusted MACs:')
         print(self.Trusted_MACs)        
 
-    def analyze_ARP(self,q): 
+    def setListOfSuspected(self,MAC):
+        if MAC not in self.listOfSuspectedMAC:
+            
+            self.listOfSuspectedMAC.append(MAC)
+            print("setListOfSuspected(self,MAC) " + str(self.listOfSuspectedMAC))
+            self.alreadySuspectedMACs.put(MAC)
+
+    def getListOfSuspectedMAC(self):
+        return self.listOfSuspectedMAC
+
+    def analyze_ARP(self,q,alreadySuspectedMACs): 
+        self.alreadySuspectedMACs = alreadySuspectedMACs
         while True:
             popped = q.get() 
             if popped == 'Stop':
@@ -32,6 +45,7 @@ class ARP_analytics():
             avg = self.MAC_statistics[MAC].checkFor_ARP_flooding() # This function will return the average ARP requests this mac do. OR None...
             if avg is not None:
                 if avg < 1.2:
+                    self.setListOfSuspected(MAC)
                     self.FB_mng.postSuspectedMAC(MAC)
         else:
             self.MAC_statistics[MAC] = MAC_statis()

@@ -1,4 +1,11 @@
 
+# ARP Sniffer analyzer 
+
+To run this write:
+```bash
+sudo python3 ./Sniffer_analyzer.py
+```
+
 sniffer.py - Is just a sniffer that prints all the data he sees.
 
 Sniffer_analayzer.py - Here we parse the packets and check if it is ARP packet.
