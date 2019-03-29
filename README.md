@@ -22,4 +22,6 @@ FireBase_mng.py -
 * Checks if this router already signs up in the server, by checking if e have our username and password in the file.
 * If this API asked to post then he makes new JSON or removes and reposted it
 
+#TODO:
+Allow some devices
 

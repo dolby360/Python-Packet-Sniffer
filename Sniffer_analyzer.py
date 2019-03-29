@@ -11,19 +11,8 @@ from uuid import getnode as get_mac
 from decimal import *
 import time
 from multiprocessing import Process, Queue
-from ARP_Analytics.ARP_analytics import *
-from Safe_surfing.Black_list_ip_analyzer import blackListAnalyze
+from ARP_analytics import *
 import sys
-
-TAB_1 = '\t - '
-TAB_2 = '\t\t - '
-TAB_3 = '\t\t\t - '
-TAB_4 = '\t\t\t\t - '
-
-DATA_TAB_1 = '\t   '
-DATA_TAB_2 = '\t\t   '
-DATA_TAB_3 = '\t\t\t   '
-DATA_TAB_4 = '\t\t\t\t   '
 
 mac = get_mac()
 my_mac_address = ':'.join(("%012X" % mac)[i:i+2] for i in range(0, 12, 2))
@@ -61,10 +50,14 @@ def ARP_Sniffer_Analyzer():
             if eth.src_mac != 'FF:FF:FF:FF:FF:FF':
                 check_if_We_already_alert_about_this_MAC()
 
+                print(eth.data)
+
                 if eth.src_mac not in list_of_already_suspected:
                     q.put(eth.src_mac)
                     print(eth.src_mac)
+                
             continue
 
-ARP_Sniffer_Analyzer()
+# ARP_Sniffer_Analyzer()
+
 

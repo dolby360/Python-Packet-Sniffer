@@ -1,21 +1,12 @@
 
 from multiprocessing import Process, Queue
-from ARP_Analytics.FireBase_mng import FireBaseMng
 import time
 
 class ARP_analytics():
     def __init__(self):
         self.MAC_statistics = {}
-        self.Trusted_MACs = []
-
-        self.FB_mng = FireBaseMng()
-        for i in self.FB_mng.get_trusted_MAC_addresses():
-            self.Trusted_MACs.append(i)
-
         self.listOfSuspectedMAC = []
-        print('Trusted MACs:')
-        print(self.Trusted_MACs)        
-
+        
     def setListOfSuspected(self,MAC):
         if MAC not in self.listOfSuspectedMAC:
             
@@ -32,9 +23,6 @@ class ARP_analytics():
             popped = q.get() 
             if popped == 'Stop':
                 break
-            if popped in self.Trusted_MACs:
-                continue
-
             # print(popped)
             self.statistics(popped)
             
@@ -46,7 +34,8 @@ class ARP_analytics():
             if avg is not None:
                 if avg < 1.2:
                     self.setListOfSuspected(MAC)
-                    self.FB_mng.postSuspectedMAC(MAC)
+                    ####################################################################
+                    #self.FB_mng.postSuspectedMAC(MAC)
         else:
             self.MAC_statistics[MAC] = MAC_statis()
 
